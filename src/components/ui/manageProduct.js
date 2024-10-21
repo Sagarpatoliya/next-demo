@@ -1,10 +1,14 @@
 "use client"
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { postData } from "@/utils/apiCalling";
 import Link from "next/link";
+import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ProductForm = ({ initialValues = {}, onSubmit, id = '' }) => {
+    const [loading, setLoading] = useState(false);
+    const router  = useRouter()
     const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         defaultValues: {
             title: "",
@@ -26,7 +30,13 @@ const ProductForm = ({ initialValues = {}, onSubmit, id = '' }) => {
     }, [initialValues, setValue]);
 
     const submitHandler = async (data) => {
-        onSubmit(data)
+        setLoading(true); 
+        try {
+            await onSubmit(data);
+        } finally {
+            setLoading(false); 
+        }
+        router.push('/')
     };
 
     return (
@@ -122,9 +132,9 @@ const ProductForm = ({ initialValues = {}, onSubmit, id = '' }) => {
 
             <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-blue-500 flex gap-2 text-white px-4 py-2 rounded"
             >
-                {id ? "Update Product" : "Add Product"}
+              {loading && <Loader />}  {id ? "Update Product" : "Add Product"}
             </button>
         </form>
     );

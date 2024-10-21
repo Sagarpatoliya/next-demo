@@ -4,10 +4,10 @@ import { getData, putData } from "@/utils/apiCalling";
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 const ProductManagePage = () => {
     const { id } = useParams()
-
     const { data: productData, error, isLoading } = useQuery({
         queryKey: ["product", id],
         queryFn: () => getData(`products/${id}`),
@@ -18,6 +18,8 @@ const ProductManagePage = () => {
     const submitHandler = async (data) => {
         try {
             const res = await putData(`/products/${id}`, data)
+            toast.success("Product Edited Successfully")
+            return res
         } catch (err) {
             console.log(err, "<-----error in add data")
         }

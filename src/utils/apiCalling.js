@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// Base URL for your API
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-console.log(API_BASE_URL , "API_BASE_URLAPI_BASE_URLAPI_BASE_URL")
-// Create an instance of axios with custom config (if needed)
+
 const apiInstance = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000, // 10 seconds timeout
@@ -13,11 +11,9 @@ const apiInstance = axios.create({
     }
 });
 
-// GET request
 export const getData = async (endpoint, params = {}) => {
     try {
         const response = await apiInstance.get(endpoint, { params });
-        console.log(response , "<-----response")
         return response.data;
     } catch (error) {
         console.error('GET Error:', error);
